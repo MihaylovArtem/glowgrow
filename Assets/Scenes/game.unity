@@ -240,18 +240,6 @@ Prefab:
 GameObject:
   m_PrefabParentObject: {fileID: 176700, guid: 82aa582b4374dfd459713fa8c0872652, type: 2}
   m_PrefabInternal: {fileID: 2045961270}
---- !u!114 &659042821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 659042818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38d84ee37d71053418d3532c03a19bbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patternGameObject: {fileID: 177798, guid: fed3a028922be864cb9c10fe06a5b4ec, type: 2}
 --- !u!1 &724939035 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 115426, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
@@ -355,9 +343,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowObject: {fileID: 2029420200}
   gameBackgroundObject: {fileID: 1229555335}
+  pattern: {fileID: 177798, guid: fed3a028922be864cb9c10fe06a5b4ec, type: 2}
   endOfStageLabel: {fileID: 117980, guid: 2626ffa3774ef1c4eacbc25a41482561, type: 2}
   newStageLabel: {fileID: 176166, guid: 7ec7b1d0a625e97468b2067f03a29697, type: 2}
-  gameTimeText: {fileID: 0}
   mainMenuGameObject: {fileID: 659042818}
   playerGameObject: {fileID: 724939035}
 --- !u!1 &1229555335 stripped

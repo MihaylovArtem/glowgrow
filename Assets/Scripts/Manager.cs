@@ -12,12 +12,12 @@ public class Manager : MonoBehaviour {
 
     public GameObject arrowObject;
     public GameObject gameBackgroundObject;
+    public GameObject pattern;
 
     public GameObject endOfStageLabel;
     public GameObject newStageLabel;
     public static GameState gameState;
 
-    public Text gameTimeText;
     public GameObject mainMenuGameObject;
     private float menuElementsSpeed = 0.03f;
 
@@ -41,7 +41,7 @@ public class Manager : MonoBehaviour {
         gameBackgroundObject.transform.position = new Vector3(0,
             2*Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y, 0);
 
-        score = 0;
+        score = 1;
         time = 0;
         stage = 0;
     }
@@ -62,6 +62,7 @@ public class Manager : MonoBehaviour {
     private void Update() {
         if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.MainMenu) {
             gameState = GameState.PreparingUI;
+
         }
 
         if (gameState == GameState.PreparingUI) {
@@ -70,8 +71,12 @@ public class Manager : MonoBehaviour {
                 gameBackgroundObject.transform.position -= new Vector3(0, yPosChange, 0);
                 mainMenuGameObject.transform.position -= new Vector3(0, yPosChange, 0);
             }
-            else {
+            else if (gameState != GameState.Playing)
+            {
                 gameState = GameState.Playing;
+                BeginNextStage();
+                var newPattern = (GameObject)Instantiate(pattern, Vector3.zero, Quaternion.identity);
+                StartCoroutine(newPattern.GetComponent<Pattern>().InitPatternWithNum(0,0.0f));
             }
         }
     }
@@ -88,13 +93,10 @@ public class Manager : MonoBehaviour {
     }
 
     public void BeginNextStage() {
-        if (gameState != GameState.PreparingUI) {
             stage++;
-            gameState = GameState.PreparingUI;
             GameObject newStageClone = Instantiate(newStageLabel);
             newStageClone.transform.SetParent(GameObject.Find("Canvas").transform, false);
             newStageClone.GetComponent<Text>().text = "STAGE " + stage;
             Destroy(newStageClone, 5.0f);
-        }
     }
 }
