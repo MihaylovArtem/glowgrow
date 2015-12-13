@@ -23,7 +23,7 @@ public class Manager : MonoBehaviour {
 
     public GameObject playerGameObject;
     private float score;
-    private int stage;
+    public static int stage;
     private float time;
     // Use this for initialization
 

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    private readonly Stack<GameObject> stackOfCatchBullets = new Stack<GameObject>();
+    public readonly Stack<GameObject> stackOfCatchBullets = new Stack<GameObject>();
     private int MaxSize;
     private Vector3 addScale = new Vector3(0.05f, 0.05f, 0.05f);
 
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour {
     public GameObject rowGameObject;
     private GameObject topRow;
     public GameObject explosion;
-    private bool isPopOccured;
+    public bool isPopOccured;
 
     public float currentSize;
     // Use this for initialization
@@ -24,7 +24,6 @@ public class Player : MonoBehaviour {
         nextRowScale = playerGameObject.transform.localScale;
         currentSize = nextRowScale.x;
         addZposition = new Vector3(0, 0, 0.01f);
-        GameObject.Find("Main Camera").GetComponent<Manager>().BeginNextStage();
     }
 
     private void ChangePlayerColor() {
@@ -70,35 +69,8 @@ public class Player : MonoBehaviour {
         CheckIfStageEnded();
     }
 
-    private void OnTriggerEnter2D(Collider2D col) {
-        if (col.gameObject.tag == "Bullet") {
-            if (col.gameObject.GetComponent<SpriteRenderer>().color == currentGlowColor) {
-                CreateRowWithBullet(col.gameObject);
-            }
-            else {
-                if (stackOfCatchBullets.Count > 0) {
-                    //все объекты одного цвета разлетаются на куски
-                    Color destroyedColor = stackOfCatchBullets.Peek().GetComponent<SpriteRenderer>().color;
-                    bool destroy = true;
-                    isPopOccured = true;
-                    while (destroy && stackOfCatchBullets.Count>0) {
-                        if (stackOfCatchBullets.Peek().GetComponent<SpriteRenderer>().color == destroyedColor) {
-                            DestroyTopRow();
-                        }
-                        else {
-                            destroy = false;
-                        }
-                    }
-                }
-                else {
-                    DestroySelf();
-                }
-            }
-            Destroy(col.gameObject);
-        }
-    }
 
-    void DestroyTopRow() {
+    public void DestroyTopRow() {
 
         //create explosion
         if (stackOfCatchBullets.Count > 0) {
@@ -121,7 +93,7 @@ public class Player : MonoBehaviour {
 
     }
 
-    void CreateRowWithBullet(GameObject bullet) {
+    public void CreateRowWithBullet(GameObject bullet) {
         isPopOccured = false;
         var catchedBullet =
             (GameObject)
@@ -137,14 +109,13 @@ public class Player : MonoBehaviour {
     }
 
     void CheckIfStageEnded() {
-        Debug.Log(stackOfCatchBullets.Count);
         if (stackOfCatchBullets.Count >= 25) {
             GameObject.Find("Main Camera").GetComponent<Manager>().EndStage();
             InvokeRepeating("DestroyTopRow", 3f, 0.001f);
         }
     }
 
-    void DestroySelf() {
+    public void DestroySelf() {
 
         GameObject expl = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
         expl.GetComponent<ParticleSystem>().startColor = gameObject.GetComponent<SpriteRenderer>().color;
