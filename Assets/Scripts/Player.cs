@@ -49,14 +49,31 @@ public class Player : MonoBehaviour
                 playerGameObject.GetComponent<SpriteRenderer>().color)
             {
                 var catchedBullet =
-                    (GameObject) Instantiate(playerGameObject, playerGameObject.transform.position + addZposition, Quaternion.identity);
+                    (GameObject)
+                        Instantiate(playerGameObject, playerGameObject.transform.position + addZposition,
+                            Quaternion.identity);
                 addZposition += new Vector3(0, 0, 0.01f);
                 catchedBullet.transform.localScale = nextRowScale;
                 nextRowScale += addScale;
+                playerGameObject.GetComponent<CircleCollider2D>().radius *= (1+addScale.x);
                 catchedBullet.GetComponent<SpriteRenderer>().color = col.gameObject.GetComponent<SpriteRenderer>().color;
                 stackOfCatchBullets.Push(catchedBullet);
-                Destroy(col.gameObject);
             }
+            else
+            {
+                //все объекты одного цвета разлетаются на куски
+                Color destroyedColor = stackOfCatchBullets.Pop().GetComponent<SpriteRenderer>().color;
+                while (stackOfCatchBullets.Peek().GetComponent<SpriteRenderer>().color == destroyedColor)
+                {
+                    stackOfCatchBullets.Pop();
+                    //объект разлетается на куски;
+                    playerGameObject.GetComponent<CircleCollider2D>().radius *= (1 + addScale.x);
+
+
+                    
+                }
+            }
+            Destroy(col.gameObject);
         }
     }
 
