@@ -5,12 +5,15 @@ public class Player : MonoBehaviour {
     public readonly Stack<GameObject> stackOfCatchBullets = new Stack<GameObject>();
     private int MaxSize;
     private Vector3 addScale = new Vector3(0.05f, 0.05f, 0.05f);
+    private Vector3 nextRowScale;
+
+    private float firstColliderSize = 0.64f;
+
 
     private Vector3 addZposition;
     public Color currentGlowColor;
     public GameObject glowGameObject;
     private SpriteRenderer glowSpriteRenderer;
-    private Vector3 nextRowScale;
     public GameObject playerGameObject;
     public GameObject rowGameObject;
     private GameObject topRow;
@@ -79,12 +82,12 @@ public class Player : MonoBehaviour {
             GameObject rowToDestroy = stackOfCatchBullets.Pop();
 
             GameObject expl = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
+            playerGameObject.GetComponent<CircleCollider2D>().radius = firstColliderSize * nextRowScale.x;
             expl.GetComponent<ParticleSystem>().startColor = rowToDestroy.GetComponent<SpriteRenderer>().color;
             expl.GetComponent<ParticleSystem>().Emit(15);
             Destroy(expl, 5f);
 
             Destroy(rowToDestroy);
-            playerGameObject.GetComponent<CircleCollider2D>().radius /= (1 + addScale.x);
 
         }
         else {
@@ -102,8 +105,8 @@ public class Player : MonoBehaviour {
         addZposition += new Vector3(0, 0, 0.01f);
         nextRowScale += addScale;
         currentSize = nextRowScale.x;
+        playerGameObject.GetComponent<CircleCollider2D>().radius = firstColliderSize*nextRowScale.x;
         catchedBullet.GetComponent<SpriteRenderer>().color = bullet.GetComponent<SpriteRenderer>().color;
-        playerGameObject.GetComponent<CircleCollider2D>().radius *= (1 + addScale.x);
         catchedBullet.GetComponent<SpriteRenderer>().color = bullet.gameObject.GetComponent<SpriteRenderer>().color;
         stackOfCatchBullets.Push(catchedBullet);
     }

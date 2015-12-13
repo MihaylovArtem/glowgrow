@@ -9,13 +9,13 @@ public class Pattern : MonoBehaviour {
     public int patternNumber;
     // Use this for initialization
     private void Start() {
-        force = 50f;
+        force = 25f;
         GameObject.Find("Main Camera").GetComponent<Manager>().BeginNextStage();
         if (patternNumber == 1)
         {
-            for (int i = 1; i <= Manager.stage * 4; i++)
+            for (int i = 1; i <= Manager.stage * 16; i++)
             {
-                StartCoroutine(CreateBullets(i, 0.0f, i % 2, i));
+                StartCoroutine(CreateBullets(4, i/16.0f, i%4, i));
             }
         }
     }
@@ -58,7 +58,6 @@ public class Pattern : MonoBehaviour {
     }
 
     private IEnumerator CreateBullets(int num, float pos, int color, float delayTime) {
-        Debug.Log(delayTime);
         yield return new WaitForSeconds(delayTime);
         Spawner.objectWithPatternCreated += num;
         for (int i = 0; i < num; i++) {
