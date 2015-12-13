@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -118,15 +119,32 @@ public class Player : MonoBehaviour {
         }
     }
 
+    
+
     public void DestroySelf() {
 
+
+        foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet"))
+        {
+            GameObject bulletExpl = Instantiate(explosion, bullet.transform.position, bullet.transform.rotation) as GameObject;
+            bulletExpl.GetComponent<ParticleSystem>().startColor = bullet.GetComponent<SpriteRenderer>().color;
+            bulletExpl.GetComponent<ParticleSystem>().Emit(15);
+            Destroy(bulletExpl, 5f);
+            Destroy(bullet);
+        }
+        Manager.gameState = Manager.GameState.PreparingNewStage;
+        Invoke("DestroyPlayer",2.0f);
+    }
+
+    public void DestroyPlayer()
+    {
         GameObject expl = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
         expl.GetComponent<ParticleSystem>().startColor = gameObject.GetComponent<SpriteRenderer>().color;
         expl.GetComponent<ParticleSystem>().Emit(120);
+
         Destroy(expl, 5f);
 
         Destroy(gameObject);
-        Manager.gameState = Manager.GameState.PreparingNewStage;
         
     }
 }

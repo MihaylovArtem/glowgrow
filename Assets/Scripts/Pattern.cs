@@ -65,14 +65,19 @@ public class Pattern : MonoBehaviour {
             if (position >= 1.0f) {
                 position -= 1.0f;
             }
-            GameObject createdBullet = SpawnSingleBullet(position);
-            createdBullet.GetComponent<Rigidbody2D>().AddForce(
-                new Vector2(force*(-createdBullet.transform.position.x), force*(-createdBullet.transform.position.y)));
-            if (color == 1) {
-                createdBullet.GetComponent<SpriteRenderer>().color = ColorPalette.bullet1Color;
-            }
-            else {
-                createdBullet.GetComponent<SpriteRenderer>().color = ColorPalette.bullet2Color;
+            if (Manager.gameState == Manager.GameState.Playing)
+            {
+                GameObject createdBullet = SpawnSingleBullet(position);
+                createdBullet.GetComponent<Rigidbody2D>().AddForce(
+                    new Vector2(force*(-createdBullet.transform.position.x), force*(-createdBullet.transform.position.y)));
+                if (color == 1)
+                {
+                    createdBullet.GetComponent<SpriteRenderer>().color = ColorPalette.bullet1Color;
+                }
+                else
+                {
+                    createdBullet.GetComponent<SpriteRenderer>().color = ColorPalette.bullet2Color;
+                }
             }
         }
     }
