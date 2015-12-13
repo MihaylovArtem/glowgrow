@@ -24,6 +24,7 @@ public class Manager : MonoBehaviour
 
     public Text gameTimeText;
     // Use this for initialization
+
     void Start() {
         ColorPalette.InitPalleteNum(1);
         Camera.main.backgroundColor = ColorPalette.background1Color;
@@ -32,7 +33,6 @@ public class Manager : MonoBehaviour
         arrowObject.GetComponent<SpriteRenderer>().color = ColorPalette.background1Color;
         
         gameState = GameState.MainMenu;
-
         mainMenuGameObject.transform.position = new Vector3(0, 0, 1);
         gameBackgroundObject.transform.position = new Vector3(0,
             2*Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y, 0);
@@ -55,23 +55,21 @@ public class Manager : MonoBehaviour
     //}
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.MainMenu)
         {
-            gameState = GameState.PreparingUI;
-        }
         if (gameState == GameState.PreparingUI)
         {
             if (gameBackgroundObject.transform.position.y > 0) {
                 float yPosChange = menuElementsSpeed*(gameBackgroundObject.transform.position.y + 1);
                 gameBackgroundObject.transform.position -= new Vector3(0, yPosChange, 0);
                 mainMenuGameObject.transform.position -= new Vector3(0, yPosChange, 0);
-            }
-            else {
                 gameState = GameState.Playing;
             }
         }
     }
+
+
 }
 
