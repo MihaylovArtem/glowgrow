@@ -9,10 +9,18 @@ public class Player : MonoBehaviour
     
 
     public GameObject playerGameObject;
-    private Stack<Bullet> stackOfCatchBullets = new Stack<Bullet>();
+    public GameObject bulletGameObject;
+    private Stack<GameObject> stackOfCatchBullets = new Stack<GameObject>();
     private int MaxSize;
+    private Vector3 addScale = new Vector3(0.05f, 0.05f, 0.05f);
+
+    private Vector3 nextRowScale;
+    private Vector3 addZposition;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+	    nextRowScale = playerGameObject.transform.localScale +addScale;
+	    addZposition = new Vector3(0, 0, 0.01f);
 	}
 
     void ChangePlayerColor()
@@ -32,4 +40,24 @@ public class Player : MonoBehaviour
     {
 	    ChangePlayerColor();
 	}
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Bullet")
+        {
+            if (col.gameObject.GetComponent<SpriteRenderer>().color ==
+                playerGameObject.GetComponent<SpriteRenderer>().color)
+            {
+                var catchedBullet =
+                    (GameObject) Instantiate(playerGameObject, playerGameObject.transform.position + addZposition, Quaternion.identity);
+                addZposition += new Vector3(0, 0, 0.01f);
+                catchedBullet.transform.localScale = nextRowScale;
+                nextRowScale += addScale;
+                catchedBullet.GetComponent<SpriteRenderer>().color = col.gameObject.GetComponent<SpriteRenderer>().color;
+                stackOfCatchBullets.Push(catchedBullet);
+                Destroy(col.gameObject);
+            }
+        }
+    }
+
 }

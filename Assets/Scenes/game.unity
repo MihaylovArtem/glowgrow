@@ -232,7 +232,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b6f654aff7e8375488a62602e9e903b9, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &659042818
+--- !u!1 &659042818 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 176700, guid: 82aa582b4374dfd459713fa8c0872652, type: 2}
   m_PrefabInternal: {fileID: 2045961270}
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d84ee37d71053418d3532c03a19bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletGameObject: {fileID: 182810, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
+  bulletGameObject: {fileID: 182684, guid: 2b26ccd3c1cd48248bb6c8dc5f3e5543, type: 2}
   bulletType: 0
 --- !u!1 &724939035 stripped
 GameObject:
@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGameObject: {fileID: 724939035}
+  bulletGameObject: {fileID: 182684, guid: 2b26ccd3c1cd48248bb6c8dc5f3e5543, type: 2}
 --- !u!1 &901603348
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowObject: {fileID: 2029420200}
   gameBackgroundObject: {fileID: 1229555335}
+  bulletGameObject: {fileID: 182684, guid: 2b26ccd3c1cd48248bb6c8dc5f3e5543, type: 2}
   gameState: 0
   gameTimeText: {fileID: 11409650, guid: ee4de4310f917c644aca0f78b8329ce9, type: 2}
   mainMenuGameObject: {fileID: 659042818}
@@ -440,6 +442,10 @@ Prefab:
     - target: {fileID: 21209632, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 182810, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}

@@ -11,6 +11,7 @@ public class Manager : MonoBehaviour {
 
     public GameObject arrowObject;
     public GameObject gameBackgroundObject;
+    public GameObject bulletGameObject;
     public GameState gameState;
 
     public Text gameTimeText;
@@ -30,6 +31,7 @@ public class Manager : MonoBehaviour {
         mainMenuGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
         arrowObject.GetComponent<SpriteRenderer>().color = ColorPalette.background1Color;
         playerGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
+        bulletGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
 
         gameState = GameState.MainMenu;
         mainMenuGameObject.transform.position = new Vector3(0, 0, 1);
