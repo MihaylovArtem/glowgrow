@@ -11,7 +11,8 @@ public class Manager : MonoBehaviour {
 
     public GameObject arrowObject;
     public GameObject gameBackgroundObject;
-    public GameState gameState;
+    public GameObject bulletGameObject;
+    public static GameState gameState;
 
     public Text gameTimeText;
     public GameObject mainMenuGameObject;

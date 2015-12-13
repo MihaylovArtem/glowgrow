@@ -256,7 +256,7 @@ Transform:
   m_GameObject: {fileID: 561392851}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: .800000012, y: .800000012, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 724939040}
   m_RootOrder: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d84ee37d71053418d3532c03a19bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletGameObject: {fileID: 182810, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
+  bulletGameObject: {fileID: 182684, guid: 2b26ccd3c1cd48248bb6c8dc5f3e5543, type: 2}
   bulletType: 0
 --- !u!1 &724939035 stripped
 GameObject:
@@ -337,6 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGameObject: {fileID: 724939035}
   glowGameObject: {fileID: 561392851}
+  rowGameObject: {fileID: 122838, guid: 7754c07f21f486e43b17445d16cf401e, type: 2}
   currentGlowColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &901603348
 GameObject:
@@ -437,7 +438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowObject: {fileID: 2029420200}
   gameBackgroundObject: {fileID: 1229555335}
-  gameState: 0
+  bulletGameObject: {fileID: 0}
   gameTimeText: {fileID: 11409650, guid: ee4de4310f917c644aca0f78b8329ce9, type: 2}
   mainMenuGameObject: {fileID: 659042818}
   playerGameObject: {fileID: 724939035}
@@ -500,6 +501,10 @@ Prefab:
     - target: {fileID: 21209632, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 182810, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
