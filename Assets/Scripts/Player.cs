@@ -7,11 +7,10 @@ public class Player : MonoBehaviour
 {
     public GameObject playerGameObject;
     private Stack<Bullet> stackOfCatchBullets = new Stack<Bullet>();
-    //private ColorPalette.PlayerColor = //<current Color off the Player>;
     private int MaxSize;
 	// Use this for initialization
 	void Start () {
-	    
+        this.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
 	}
 	
 	// Update is called once per frame

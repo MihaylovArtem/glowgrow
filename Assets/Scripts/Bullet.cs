@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
     
-    private ColorPalette.Colors bulletColor = ColorPalette.Colors.Green;
+    private Color bulletColor;
+    public int bulletType;
     private float bulletSpeed;
     //private BUlletType square; - элемент enum класса типов
  
@@ -12,7 +13,14 @@ public class Bullet : MonoBehaviour {
 	void Start ()
 	{
 	    //bulletSpeed = Manager.Time*0.01;
-        //bulletColor = <берем из палитры >;
+	    if (bulletType == 1) {
+	        bulletColor = ColorPalette.bullet1Color;
+	    }
+
+        if (bulletType == 2)
+        {
+            bulletColor = ColorPalette.bullet2Color;
+        }
 	}
 	
 	// Update is called once per frame
