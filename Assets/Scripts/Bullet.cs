@@ -13,6 +13,11 @@ public class Bullet : MonoBehaviour {
     void Start()
     {
         //bulletSpeed = Manager.Time*0.01;
+      
+    }
+
+    public void SetBulletColor()
+    {
         if (bulletType == 1)
         {
             bulletColor = ColorPalette.bullet1Color;
