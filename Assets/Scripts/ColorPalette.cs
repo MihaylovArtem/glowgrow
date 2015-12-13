@@ -19,6 +19,15 @@ public class ColorPalette : MonoBehaviour {
                 background2Color = playerColor;
                 break;
             }
+            case 2:
+                {
+                    playerColor = new Color(66f / 255f, 66f / 255f, 66f / 255f);
+                    bullet1Color = new Color(255f / 255f, 153f / 255f, 0f / 255f); 
+                    bullet2Color = new Color(50f / 255f, 153f / 255f, 187f / 255f);
+                    background1Color = new Color(188f / 255f, 188f / 255f, 188f / 255f);
+                    background2Color = playerColor;
+                    break;
+                }
 	    }
 	}
 

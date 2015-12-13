@@ -24,12 +24,13 @@ public class Manager : MonoBehaviour {
     // Use this for initialization
 
     private void Start() {
-        ColorPalette.InitPalleteNum(1);
+        ColorPalette.InitPalleteNum(2);
         Camera.main.backgroundColor = ColorPalette.background1Color;
         gameBackgroundObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
         mainMenuGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
         arrowObject.GetComponent<SpriteRenderer>().color = ColorPalette.background1Color;
         playerGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
+        playerGameObject.GetComponent<Player>().currentGlowColor = ColorPalette.bullet1Color;
 
         gameState = GameState.MainMenu;
         mainMenuGameObject.transform.position = new Vector3(0, 0, 1);
