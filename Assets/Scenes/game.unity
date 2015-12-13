@@ -302,24 +302,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletGameObject: {fileID: 182684, guid: 2b26ccd3c1cd48248bb6c8dc5f3e5543, type: 2}
-  bulletType: 0
 --- !u!1 &724939035 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 182810, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
   m_PrefabInternal: {fileID: 1644499079}
---- !u!58 &724939038
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 724939035}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: .574999988
 --- !u!4 &724939040 stripped
 Transform:
   m_PrefabParentObject: {fileID: 423680, guid: 1f9820fa914feff468b73d588d158cc1, type: 2}
@@ -335,10 +321,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb7fdbf16b405445a02d26658f0123a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerGameObject: {fileID: 724939035}
-  glowGameObject: {fileID: 561392851}
-  rowGameObject: {fileID: 122838, guid: 7754c07f21f486e43b17445d16cf401e, type: 2}
   currentGlowColor: {r: 0, g: 0, b: 0, a: 0}
+  glowGameObject: {fileID: 561392851}
+  playerGameObject: {fileID: 724939035}
+  rowGameObject: {fileID: 122838, guid: 7754c07f21f486e43b17445d16cf401e, type: 2}
 --- !u!1 &901603348
 GameObject:
   m_ObjectHideFlags: 0

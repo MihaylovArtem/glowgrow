@@ -11,6 +11,7 @@ GameObject:
   - 212: {fileID: 21293588}
   - 50: {fileID: 5003086}
   - 58: {fileID: 5879916}
+  - 114: {fileID: 11453524}
   m_Layer: 0
   m_Name: BulletSprite
   m_TagString: Bullet
@@ -59,6 +60,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .194999993
+--- !u!114 &11453524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 564e8a77df9b82b4eaeee9763b88bd3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletType: 1
 --- !u!212 &21293588
 SpriteRenderer:
   m_ObjectHideFlags: 1
