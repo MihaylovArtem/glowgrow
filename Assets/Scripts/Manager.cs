@@ -6,12 +6,15 @@ public class Manager : MonoBehaviour {
         MainMenu,
         Playing,
         GameOver,
-        PreparingUI
+        PreparingUI,
+        PreparingNewStage
     }
 
     public GameObject arrowObject;
     public GameObject gameBackgroundObject;
-    public GameObject bulletGameObject;
+
+    public GameObject endOfStageLabel;
+    public GameObject newStageLabel;
     public static GameState gameState;
 
     public Text gameTimeText;
@@ -40,7 +43,7 @@ public class Manager : MonoBehaviour {
 
         score = 0;
         time = 0;
-        stage = 1;
+        stage = 0;
     }
 
     //private void StartGame()
@@ -73,4 +76,25 @@ public class Manager : MonoBehaviour {
         }
     }
 
+    public void EndStage() {
+
+        if (gameState != GameState.PreparingNewStage) {
+            gameState = GameState.PreparingNewStage;
+            GameObject endOfStageClone = Instantiate(endOfStageLabel);
+            endOfStageClone.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            Destroy(endOfStageClone, 3.0f);
+            Invoke("BeginNextStage", 3.0f);
+        }
+    }
+
+    public void BeginNextStage() {
+        if (gameState != GameState.PreparingUI) {
+            stage++;
+            gameState = GameState.PreparingUI;
+            GameObject newStageClone = Instantiate(newStageLabel);
+            newStageClone.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            newStageClone.GetComponent<Text>().text = "STAGE " + stage;
+            Destroy(newStageClone, 5.0f);
+        }
+    }
 }
