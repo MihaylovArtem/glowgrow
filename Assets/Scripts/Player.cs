@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     private int MaxSize;
 	// Use this for initialization
 	void Start () {
-        this.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
 	}
 
     void ChangePlayerColor()

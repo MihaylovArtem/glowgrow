@@ -29,6 +29,7 @@ public class Manager : MonoBehaviour {
         gameBackgroundObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
         mainMenuGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
         arrowObject.GetComponent<SpriteRenderer>().color = ColorPalette.background1Color;
+        playerGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
 
         gameState = GameState.MainMenu;
         mainMenuGameObject.transform.position = new Vector3(0, 0, 1);
