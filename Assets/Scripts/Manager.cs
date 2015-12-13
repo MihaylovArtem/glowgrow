@@ -28,7 +28,7 @@ public class Manager : MonoBehaviour
 
     public Text gameTimeText;
     // Use this for initialization
-    void Start()
+    private void Start()
     {
 
         MainMenuGameObject.transform.position = new Vector3(0, 0, 1);
@@ -61,7 +61,7 @@ public class Manager : MonoBehaviour
     //}
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyUp(KeyCode.G) && isInGame == 0)
         {
@@ -140,7 +140,8 @@ public class Manager : MonoBehaviour
         }
         if (isInGame == -1)
         {
-            if (BackGroundGameObject.transform.position.y < 2*Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y)
+            if (BackGroundGameObject.transform.position.y <
+                2*Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y)
             {
                 BackGroundGameObject.transform.position += new Vector3(0, menuElementsSpeed, 0);
             }
@@ -151,7 +152,8 @@ public class Manager : MonoBehaviour
         }
         if (isInSettings == -1)
         {
-            if (SettingsGameObject.transform.position.x < 2 * Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x)
+            if (SettingsGameObject.transform.position.x <
+                2*Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x)
             {
                 SettingsGameObject.transform.position += new Vector3(menuElementsSpeed, 0, 0);
             }
@@ -162,7 +164,8 @@ public class Manager : MonoBehaviour
         }
         if (isInHighscores == -1)
         {
-            if (HighscoresGameObject.transform.position.x > -2 * Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x)
+            if (HighscoresGameObject.transform.position.x >
+                -2*Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x)
             {
                 HighscoresGameObject.transform.position -= new Vector3(menuElementsSpeed, 0, 0);
             }
@@ -172,5 +175,7 @@ public class Manager : MonoBehaviour
             }
         }
     }
+
+
 }
 
