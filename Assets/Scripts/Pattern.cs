@@ -11,12 +11,11 @@ public class Pattern : MonoBehaviour {
     public GameObject tutorialTextPrefab2;
     public int patternNumber;
     // Use this for initialization
-    public IEnumerator InitPatternWithNum(int patNum, float waitTime) {
-        yield return new WaitForSeconds(waitTime);
+    public void InitPatternWithNum(int patNum, float waitTime) {
         force = 25f;
         Debug.Log(patNum);
         if (patNum == 1) {
-            for (int i = 1; i <= Manager.stage*6; i++) {
+            for (int i = 1; i <= Manager.stage*16; i++) {
                 StartCoroutine(CreateBullets(4, i/6f, i%4, i));
             }
         }
@@ -24,15 +23,19 @@ public class Pattern : MonoBehaviour {
         {
             for (int i = 1; i <= Manager.stage * 16; i++)
             {
-                StartCoroutine(CreateSpiralBullets(1, 0.0f, 1, 2.0f, 0.8f, 1));
+                StartCoroutine(CreateSpiralBullets(4, 0.0f, 1, 2.0f, 0.8f, i/4.0f));
             }
         }
     }
 
+    public void StopAllPatternCoroutines()
+    {
+        StopAllCoroutines();
+    }
+
     public void StartTutorial(bool again) {
         if (again) {
-            StopCoroutine("CreateTutorialText");
-            StopCoroutine("CreateBullets");
+            StopAllCoroutines();
             StartCoroutine(CreateTutorialText("Let's try again",0.0f,1));
             StartCoroutine(CreateTutorialText("Match your color with bullet's", 3.0f, 2));
             StartCoroutine(CreateBullets(1, 0.0f, 1, 3));
@@ -40,7 +43,6 @@ public class Pattern : MonoBehaviour {
             StartCoroutine(CreateBullets(1, 0.5f, 2, 8));
             StartCoroutine(CreateTutorialText("The rows of same color will explode if you catch the wrong particle", 10.0f, 2));
             StartCoroutine(CreateTutorialText("Good luck!", 13.0f, 1));
-            StartCoroutine(InitPatternWithNum(1, 14.0f));
 
         }
         else {
@@ -52,7 +54,6 @@ public class Pattern : MonoBehaviour {
             StartCoroutine(CreateBullets(1, 0.5f, 2, 11));
             StartCoroutine(CreateTutorialText("The row will explode if you catch the wrong particle", 13.0f, 2));
             StartCoroutine(CreateTutorialText("Good luck!", 16.0f, 1));
-            StartCoroutine(InitPatternWithNum(1, 17.0f));
             PlayerPrefs.SetInt("TutorialCompleted", 1);
         }
     }
@@ -116,7 +117,6 @@ public class Pattern : MonoBehaviour {
         yield return new WaitForSeconds(delayTime);
         for (int i = 0; i < num; i++)
         {
-            Debug.Log("Spiral");
             float position = pos + 1.0f * i / num;
             if (position >= 1.0f)
             {

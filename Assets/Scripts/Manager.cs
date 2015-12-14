@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class Manager : MonoBehaviour {
         Playing,
         GameOver,
         PreparingUI,
-        PreparingNewStage,
+        BetweenStage,
         Tutorial
     }
 
@@ -16,6 +17,8 @@ public class Manager : MonoBehaviour {
     public static int stage;
 
     public GameObject arrowObject;
+    private GameObject canvas;
+    private GameObject currentPlayer;
 
     public GameObject endOfStageLabel;
     public GameObject gameBackgroundObject;
@@ -26,11 +29,10 @@ public class Manager : MonoBehaviour {
     public GameObject pattern;
 
     public GameObject playerPrefab;
-    private GameObject currentPlayer;
-    private GameObject canvas;
 
     private GameObject pressUpText;
     public GameObject pressUpTextPrefab;
+    private GameObject helpText;
     private float score;
     private float time;
     public GameObject tutorialTextPrefab;
@@ -59,13 +61,11 @@ public class Manager : MonoBehaviour {
 
 
     // Update is called once per frame
-    private void Update()
-    {
+    private void Update() {
         if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.MainMenu) {
             StartCoroutine(GoToGameScreen());
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.GameOver)
-        {
+        if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.GameOver) {
             if (PlayerPrefs.GetInt("TutorialCompleted") != 1) {
                 StartTutorial(true);
             }
@@ -73,14 +73,17 @@ public class Manager : MonoBehaviour {
                 StartNewGame();
             }
         }
+        if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
+            StartCoroutine(GoToMainMenuScreen());
+        }
     }
 
-    IEnumerator GoToGameScreen() {
+    private IEnumerator GoToGameScreen() {
         pressUpText.SetActive(false);
         gameState = GameState.PreparingUI;
         while (gameBackgroundObject.transform.position.y > 0) {
             yield return new WaitForEndOfFrame();
-            float yPosChange = menuElementsSpeed * (gameBackgroundObject.transform.position.y + 1);
+            float yPosChange = menuElementsSpeed*(gameBackgroundObject.transform.position.y + 1);
             gameBackgroundObject.transform.position -= new Vector3(0, yPosChange, 0);
             mainMenuGameObject.transform.position -= new Vector3(0, yPosChange, 0);
         }
@@ -91,13 +94,12 @@ public class Manager : MonoBehaviour {
             StartNewGame();
         }
     }
-    IEnumerator GoToMainMenuScreen()
-    {
-        while (mainMenuGameObject.transform.position.y < 0)
-        {
+
+    private IEnumerator GoToMainMenuScreen() {
+        while (mainMenuGameObject.transform.position.y < 0) {
             gameState = GameState.PreparingUI;
             yield return new WaitForEndOfFrame();
-            float yPosChange = menuElementsSpeed * (gameBackgroundObject.transform.position.y + 1);
+            float yPosChange = menuElementsSpeed*(gameBackgroundObject.transform.position.y + 1);
             gameBackgroundObject.transform.position += new Vector3(0, yPosChange, 0);
             mainMenuGameObject.transform.position += new Vector3(0, yPosChange, 0);
         }
@@ -110,27 +112,34 @@ public class Manager : MonoBehaviour {
         pattern.GetComponent<Pattern>().StartTutorial(again);
         StartCoroutine(CreatePlayer());
     }
-    private void StartNewGame()
-    {
+
+    private void StartNewGame() {
         gameState = GameState.Playing;
         time = 0;
         stage = 1;
         score = 0;
+        DestroyImmediate(helpText);
         StartCoroutine(CreatePlayer());
         BeginStage();
     }
 
-    public void EndStage() {
-            GameObject endOfStageClone = Instantiate(endOfStageLabel);
-            endOfStageClone.transform.SetParent(canvas.transform, false);
-            Destroy(endOfStageClone, 3.0f);
-            Invoke("BeginStage", 3.0f);
-            stage++;
+    public void EndStage()
+    {
+        gameState = GameState.BetweenStage;
+        GameObject endOfStageClone = Instantiate(endOfStageLabel);
+        endOfStageClone.transform.SetParent(canvas.transform, false);
+        endOfStageClone.GetComponent<Text>().text="STAGE "+stage+" ENDED";
+        Destroy(endOfStageClone, 3.0f);
+        Invoke("BeginStage", 3.0f);
+        stage++;
+        pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
     }
 
     public void BeginStage()
     {
-        StartCoroutine(pattern.GetComponent<Pattern>().InitPatternWithNum(2,0.0f));
+        gameState = GameState.Playing;
+        int patternNum = Random.Range(1, 3);
+        pattern.GetComponent<Pattern>().InitPatternWithNum(patternNum, 0.0f);
         GameObject newStageClone = Instantiate(newStageLabel);
         newStageClone.transform.SetParent(canvas.transform, false);
         newStageClone.GetComponent<Text>().text = "STAGE " + stage;
@@ -144,8 +153,9 @@ public class Manager : MonoBehaviour {
         currentPlayer.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
         currentPlayer.GetComponent<Player>().currentGlowColor = ColorPalette.bullet1Color;
         while (currentPlayer.transform.localScale.x <= 1) {
-            currentPlayer.transform.localScale += new Vector3(Time.deltaTime * 5, Time.deltaTime * 5, Time.deltaTime * 5);
-            currentPlayer.transform.GetChild(0).localScale += new Vector3(Time.deltaTime * 5, Time.deltaTime * 5, Time.deltaTime * 5);
+            currentPlayer.transform.localScale += new Vector3(Time.deltaTime*5, Time.deltaTime*5, Time.deltaTime*5);
+            currentPlayer.transform.GetChild(0).localScale += new Vector3(Time.deltaTime*5, Time.deltaTime*5,
+                Time.deltaTime*5);
             yield return new WaitForEndOfFrame();
         }
         Destroy(currentPlayer);
@@ -154,10 +164,12 @@ public class Manager : MonoBehaviour {
         currentPlayer.GetComponent<Player>().currentGlowColor = ColorPalette.bullet1Color;
     }
 
-    public void GameOver() {
+    public void GameOver()
+    {
+        pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
-        GameObject helpText = Instantiate(pressUpTextPrefab);
-        helpText.transform.SetParent(canvas.transform,false);
+        helpText = Instantiate(pressUpTextPrefab);
+        helpText.transform.SetParent(canvas.transform, false);
         helpText.GetComponent<Text>().text = "Press up to restart\n\nPress down to main menu";
     }
 }

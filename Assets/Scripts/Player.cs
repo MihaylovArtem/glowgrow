@@ -109,22 +109,31 @@ public class Player : MonoBehaviour {
     }
 
     private void CheckIfStageEnded() {
-        if (stackOfCatchBullets.Count >= 40) {
+        if (stackOfCatchBullets.Count >= 40 && Manager.gameState==Manager.GameState.Playing) {
+            DestroyAllBullets();
+            Debug.Log("Stage ended");
             gameManager.EndStage();
             InvokeRepeating("DestroyTopRow", 3f, 0.001f);
         }
     }
 
-
-    public void DestroySelf() {
-        foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet")) {
+    void DestroyAllBullets()
+    {
+        foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet"))
+        {
             var bulletExpl = Instantiate(explosion, bullet.transform.position, bullet.transform.rotation) as GameObject;
             bulletExpl.GetComponent<ParticleSystem>().startColor = bullet.GetComponent<SpriteRenderer>().color;
             bulletExpl.GetComponent<ParticleSystem>().Emit(15);
             Destroy(bulletExpl, 5f);
             Destroy(bullet);
         }
-        Manager.gameState = Manager.GameState.PreparingNewStage;
+        
+    }
+
+    public void DestroySelf()
+    {
+        gameManager.GameOver();
+        DestroyAllBullets();
         Invoke("DestroyPlayer", 2.0f);
     }
 
@@ -136,6 +145,5 @@ public class Player : MonoBehaviour {
         Destroy(expl, 5f);
 
         Destroy(gameObject);
-        gameManager.GameOver();
     }
 }
