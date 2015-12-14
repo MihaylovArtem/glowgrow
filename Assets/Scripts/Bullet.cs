@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Bullet : MonoBehaviour {
 
@@ -39,6 +40,7 @@ public class Bullet : MonoBehaviour {
         var player = col.gameObject.GetComponent<Player>();
         if (col.gameObject.tag == "Player")
         {
+            Manager.totalScore += 10;
             if (gameObject.GetComponent<SpriteRenderer>().color == player.currentGlowColor)
             {
                 player.CreateRowWithBullet(gameObject);
@@ -51,10 +53,12 @@ public class Bullet : MonoBehaviour {
                     Color destroyedColor = player.stackOfCatchBullets.Peek().GetComponent<SpriteRenderer>().color;
                     bool destroy = true;
                     player.isPopOccured = true;
+                    int numberOfDestroyedRows = 0;
                     while (destroy && player.stackOfCatchBullets.Count > 0)
                     {
                         if (player.stackOfCatchBullets.Peek().GetComponent<SpriteRenderer>().color == destroyedColor)
                         {
+                            numberOfDestroyedRows++;
                             player.DestroyTopRow();
                         }
                         else
@@ -62,6 +66,7 @@ public class Bullet : MonoBehaviour {
                             destroy = false;
                         }
                     }
+                    Manager.totalScore += numberOfDestroyedRows*Manager.multiplayer;
                 }
                 else
                 {

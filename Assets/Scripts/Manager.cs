@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class Manager : MonoBehaviour {
@@ -12,10 +13,18 @@ public class Manager : MonoBehaviour {
         Tutorial
     }
 
+    public static int totalScore;
+    public static int recordScore;
+    public static int multiplayer;
+
     public static GameState gameState;
     public static int stage;
 
     public GameObject arrowObject;
+
+    public GameObject scoreLabel;
+    public GameObject scoreLabelClone;
+
 
     public GameObject endOfStageLabel;
     public GameObject gameBackgroundObject;
@@ -73,6 +82,10 @@ public class Manager : MonoBehaviour {
                 StartNewGame();
             }
         }
+        if (gameState == GameState.Playing)
+        {
+            scoreLabelClone.GetComponent<Text>().text = "Your score\n" + totalScore.ToString();
+        }
     }
 
     IEnumerator GoToGameScreen() {
@@ -115,8 +128,11 @@ public class Manager : MonoBehaviour {
         gameState = GameState.Playing;
         time = 0;
         stage = 1;
-        score = 0;
+        totalScore = 0;
+        multiplayer = 1;
         StartCoroutine(CreatePlayer());
+        scoreLabelClone = Instantiate(scoreLabel);
+        scoreLabelClone.transform.SetParent(canvas.transform, false);
         BeginStage();
     }
 
@@ -126,6 +142,7 @@ public class Manager : MonoBehaviour {
             Destroy(endOfStageClone, 3.0f);
             Invoke("BeginStage", 3.0f);
             stage++;
+            multiplayer++;
     }
 
     public void BeginStage()
