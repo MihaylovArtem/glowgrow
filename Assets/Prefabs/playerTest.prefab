@@ -88,7 +88,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: .574999988
+  m_Radius: .639999986
 --- !u!114 &11415186
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,12 +101,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGlowColor: {r: 0, g: 0, b: 0, a: 0}
+  currentSize: 0
+  explosion: {fileID: 180050, guid: 70454f7216e5dd54b975553aa490a264, type: 2}
   glowGameObject: {fileID: 181966}
+  isPopOccured: 0
   playerGameObject: {fileID: 115426}
   rowGameObject: {fileID: 122838, guid: 7754c07f21f486e43b17445d16cf401e, type: 2}
-  explosion: {fileID: 180050, guid: 70454f7216e5dd54b975553aa490a264, type: 2}
-  isPopOccured: 0
-  currentSize: 0
 --- !u!212 &21261778
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -132,7 +132,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 730c687a1fc946b4ebf8db0642a7fbb4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: .392156869}
 --- !u!212 &21292578
 SpriteRenderer:
   m_ObjectHideFlags: 1
