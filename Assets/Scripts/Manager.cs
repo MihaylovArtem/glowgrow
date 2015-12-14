@@ -26,7 +26,7 @@ public class Manager : MonoBehaviour {
     private GameObject currentPlayer;
 
     public GameObject scoreLabel;
-    public GameObject scoreLabelClone;
+    private GameObject scoreLabelClone;
 
 
     public GameObject endOfStageLabel;
@@ -84,6 +84,7 @@ public class Manager : MonoBehaviour {
         }
         if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
             StartCoroutine(GoToMainMenuScreen());
+        }
         if (gameState == GameState.Playing)
         {
             scoreLabelClone.GetComponent<Text>().text = "Your score\n" + totalScore.ToString();
@@ -182,6 +183,11 @@ public class Manager : MonoBehaviour {
     {
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
+        Invoke("InstantiateHelpText",2.0f);
+    }
+
+    void InstantiateHelpText() {
+
         helpText = Instantiate(pressUpTextPrefab);
         helpText.transform.SetParent(canvas.transform, false);
         helpText.GetComponent<Text>().text = "Press up to restart\n\nPress down to main menu";
