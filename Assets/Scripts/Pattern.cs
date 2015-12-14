@@ -10,22 +10,60 @@ public class Pattern : MonoBehaviour {
     public GameObject tutorialTextPrefab;
     public GameObject tutorialTextPrefab2;
     public int patternNumber;
+
     // Use this for initialization
-    public void InitPatternWithNum(int patNum, float waitTime) {
-        force = 25f;
+    public IEnumerator InitPatternWithNum(int patNum) {
+        force = 25f * Mathf.Log10(Manager.time+10);
         Debug.Log(patNum);
+        float startPoint = Random.Range(0.0f, 1.0f);
         if (patNum == 1) {
-            for (int i = 1; i <= Manager.stage*16; i++) {
-                StartCoroutine(CreateBullets(4, i/6f, i%4, i));
+            for (int i = 1; i <= 6; i++)
+            {
+                StartCoroutine(CreateSpiralBullets(1, startPoint, i % 2, 2, 0.8f, i/2f));
             }
+            for (int i = 7; i <= 12; i++)
+            {
+                StartCoroutine(CreateSpiralBullets(1, startPoint+0.5f, i % 2, 2, 0.8f, i/2f));
+            }
+            yield return new WaitForSeconds(8);
         }
         else if (patNum == 2)
         {
-            for (int i = 1; i <= Manager.stage * 16; i++)
+            for (int i = 1; i <= 10; i++)
             {
-                StartCoroutine(CreateSpiralBullets(4, 0.0f, 1, 2.0f, 0.8f, i/4.0f));
+                StartCoroutine(CreateSpiralBullets(1, (startPoint + i / 2f) % 2, i % 2, 2,0.7f, i/2f));
             }
+            yield return new WaitForSeconds(6);
         }
+        else if (patNum == 3) {
+            int elements = (int) (16 * Mathf.Log10(Manager.time + 10));
+            for (int i = 1; i <= elements; i++)
+            {
+                StartCoroutine(CreateBullets(1,startPoint+i/16.0f,i%4,i/2.0f));
+            }
+            yield return new WaitForSeconds((int)(16 * Mathf.Log10(Manager.time + 10))/2+1);
+        }
+        else if (patNum == 4)
+        {
+
+            for (int i = 1; i <= 4; i++)
+            {
+                StartCoroutine(CreateSpiralBullets(2, (startPoint + i / 2f) % 2, i % 2, 2, 0.7f, i/2f));
+            }
+            for (int i = 1; i <= 4; i++)
+            {
+                StartCoroutine(CreateSpiralBullets(2, (startPoint +0.5f+ i / 2f) % 2, i % 2, 2, 0.7f, i / 2f));
+            }
+
+            yield return new WaitForSeconds(7);
+        }
+        CallRandomPattern();
+    }
+
+    public void CallRandomPattern() {
+        int randomNum = Random.Range(1, 5);
+        StartCoroutine(InitPatternWithNum(randomNum));
+        
     }
 
     public void StopAllPatternCoroutines()

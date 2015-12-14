@@ -40,12 +40,15 @@ public class Manager : MonoBehaviour {
     public GameObject playerPrefab;
 
     private GameObject pressUpText;
+    public GameObject gameNameText;
     public GameObject pressUpTextPrefab;
     private GameObject helpText;
     private float score;
-    private float time;
+    public static float time;
     public GameObject tutorialTextPrefab;
     public GameObject tutorialTextPrefab2;
+
+    public AudioManager audioManager;
     // Use this for initialization
 
     private void Start() {
@@ -85,14 +88,16 @@ public class Manager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
             StartCoroutine(GoToMainMenuScreen());
         }
-        if (gameState == GameState.Playing)
-        {
+        if (gameState == GameState.Playing) {
+            time += Time.deltaTime;
             scoreLabelClone.GetComponent<Text>().text = "Your score\n" + totalScore.ToString();
         }
+
     }
 
     private IEnumerator GoToGameScreen() {
         pressUpText.SetActive(false);
+        gameNameText.SetActive(false);
         gameState = GameState.PreparingUI;
         while (gameBackgroundObject.transform.position.y > 0) {
             yield return new WaitForEndOfFrame();
@@ -108,7 +113,9 @@ public class Manager : MonoBehaviour {
         }
     }
 
-    private IEnumerator GoToMainMenuScreen() {
+    private IEnumerator GoToMainMenuScreen()
+    {
+        Destroy(helpText);
         while (mainMenuGameObject.transform.position.y < 0) {
             gameState = GameState.PreparingUI;
             yield return new WaitForEndOfFrame();
@@ -116,7 +123,10 @@ public class Manager : MonoBehaviour {
             gameBackgroundObject.transform.position += new Vector3(0, yPosChange, 0);
             mainMenuGameObject.transform.position += new Vector3(0, yPosChange, 0);
         }
+        gameBackgroundObject.transform.position = new Vector3(0, Screen.height * 2, 0);
+        mainMenuGameObject.transform.position = new Vector3(0, 0, 1);
         pressUpText.SetActive(true);
+        gameNameText.SetActive(true);
         gameState = GameState.MainMenu;
     }
 
@@ -127,10 +137,12 @@ public class Manager : MonoBehaviour {
     }
 
     private void StartNewGame() {
+        time = 0;
+        audioManager.PlayMusic();
         gameState = GameState.Playing;
         time = 0;
         stage = 1;
-        DestroyImmediate(helpText);
+        Destroy(helpText);
         totalScore = 0;
         multiplayer = 1;
         StartCoroutine(CreatePlayer());
@@ -139,6 +151,7 @@ public class Manager : MonoBehaviour {
         BeginStage();
     }
     public void EndStage() {
+        audioManager.PauseMusic();
         gameState = GameState.BetweenStage;
             GameObject endOfStageClone = Instantiate(endOfStageLabel);
             endOfStageClone.transform.SetParent(canvas.transform, false);
@@ -150,11 +163,11 @@ public class Manager : MonoBehaviour {
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
     }
 
-    public void BeginStage()
-    {
+    public void BeginStage() {
+        audioManager.ContinueMusic();
         gameState = GameState.Playing;
         int patternNum = Random.Range(1, 3);
-        pattern.GetComponent<Pattern>().InitPatternWithNum(patternNum, 0.0f);
+        pattern.GetComponent<Pattern>().CallRandomPattern();
         GameObject newStageClone = Instantiate(newStageLabel);
         newStageClone.transform.SetParent(canvas.transform, false);
         newStageClone.GetComponent<Text>().text = "STAGE " + stage;
@@ -179,8 +192,9 @@ public class Manager : MonoBehaviour {
         currentPlayer.GetComponent<Player>().currentGlowColor = ColorPalette.bullet1Color;
     }
 
-    public void GameOver()
-    {
+    public void GameOver() {
+        time = 0;
+        audioManager.PauseMusic();
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
         Invoke("InstantiateHelpText",2.0f);
@@ -189,6 +203,7 @@ public class Manager : MonoBehaviour {
     void InstantiateHelpText() {
 
         helpText = Instantiate(pressUpTextPrefab);
+        helpText.transform.name = "Help text";
         helpText.transform.SetParent(canvas.transform, false);
         helpText.GetComponent<Text>().text = "Press up to restart\n\nPress down to main menu";
     }

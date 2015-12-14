@@ -71,7 +71,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564e8a77df9b82b4eaeee9763b88bd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound1: {fileID: 8300000, guid: 894cc8e9e2da7e94694bfc91515cb7be, type: 3}
+  sound2: {fileID: 8300000, guid: dc3c2d424b667594eb507fde0d7cd0c1, type: 3}
+  audioSource: {fileID: 104058, guid: a49884d52efcbc044b7805898b2b1cf3, type: 2}
   bulletType: 1
+  bulletSpeed: 0
+  bulletCurve: 0
+  bulletMoveType: 
 --- !u!212 &21293588
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -125,6 +131,22 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sound1
+      value: 
+      objectReference: {fileID: 8300000, guid: 894cc8e9e2da7e94694bfc91515cb7be, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sound2
+      value: 
+      objectReference: {fileID: 8300000, guid: dc3c2d424b667594eb507fde0d7cd0c1, type: 3}
+    - target: {fileID: 0}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 8233556, guid: a49884d52efcbc044b7805898b2b1cf3, type: 2}
+    - target: {fileID: 0}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 104058, guid: a49884d52efcbc044b7805898b2b1cf3, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 182684}

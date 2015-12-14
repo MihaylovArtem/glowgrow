@@ -10,7 +10,17 @@ public class ColorPalette : MonoBehaviour {
     
     // Use this for initialization
 	public static void InitPalleteNum (int i) {
-	    switch (i) {
+        switch (i)
+        {
+            case 0:
+                {
+                    playerColor = new Color(0.5f, 0.5f, 0.5f);
+                    bullet1Color = new Color(0.5f, 0.5f, 0.5f);
+                    bullet2Color = new Color(0.5f, 0.5f, 0.5f);
+                    background1Color = new Color(0.7f, 0.7f, 0.7f);
+                    background2Color = playerColor;
+                    break;
+                }
             case 1: {
                 playerColor = new Color(84f/255f, 36f/255f, 55f/255f);
                 bullet1Color = new Color(217f/255f, 91f/255f, 67f/255f);
@@ -31,10 +41,11 @@ public class ColorPalette : MonoBehaviour {
 	    }
 	}
 
-	// Update is called once per frame
-	void Update () {
-	    
-	}
-
+    IEnumerator ChangeAllObjectsToMatchPallete()  {
+        foreach (var pl in GameObject.FindGameObjectsWithTag("PlayerColor")) {
+            
+        }
+        yield return new WaitForEndOfFrame();
+    }
     
 }

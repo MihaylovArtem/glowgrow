@@ -20,6 +20,8 @@ public class Player : MonoBehaviour {
     public GameObject rowGameObject;
     private GameObject topRow;
 
+    private bool destroyingSelf=false;
+
     private Manager gameManager;
     // Use this for initialization
     private void Start() {
@@ -130,11 +132,15 @@ public class Player : MonoBehaviour {
         
     }
 
-    public void DestroySelf()
-    {
-        gameManager.GameOver();
-        DestroyAllBullets();
-        Invoke("DestroyPlayer", 2.0f);
+    public void DestroySelf() {
+        if (!destroyingSelf)
+        {
+            gameManager.GameOver();
+            DestroyAllBullets();
+            Invoke("DestroyPlayer", 2.0f);
+            
+        }
+        destroyingSelf = true;
     }
 
     public void DestroyPlayer() {

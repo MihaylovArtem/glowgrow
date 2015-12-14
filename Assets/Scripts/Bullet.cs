@@ -73,6 +73,15 @@ public class Bullet : MonoBehaviour {
                     player.DestroySelf();
                 }
             }
+//            if (GetComponent<SpriteRenderer>().color==ColorPalette.bullet1Color) {
+//                sourceClone.GetComponent<AudioSource>().clip = sound1;
+//            }
+//            if (GetComponent<SpriteRenderer>().color == ColorPalette.bullet2Color)
+//            {
+//                sourceClone.GetComponent<AudioSource>().clip = sound2;
+//            }
+//            sourceClone.GetComponent<AudioSource>().Play();
+//            Destroy(sourceClone,5.0f);
             Destroy(gameObject);
         }
     }
