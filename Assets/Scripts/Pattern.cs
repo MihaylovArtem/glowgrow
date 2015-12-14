@@ -8,6 +8,8 @@ public class Pattern : MonoBehaviour {
     public float force;
     public GameObject pattern;
     public GameObject tutorialTextPrefab;
+    
+
     public GameObject tutorialTextPrefab2;
     public int patternNumber;
 

@@ -16,7 +16,7 @@ public class Manager : MonoBehaviour {
 
     public static int totalScore;
     public static int recordScore;
-    public static int multiplayer;
+    public static float multiplayer;
 
     public static GameState gameState;
     public static int stage;
@@ -88,9 +88,9 @@ public class Manager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
             StartCoroutine(GoToMainMenuScreen());
         }
-        if (gameState == GameState.Playing) {
-            time += Time.deltaTime;
-            scoreLabelClone.GetComponent<Text>().text = "Your score\n" + totalScore.ToString();
+        if (gameState == GameState.Playing) time += Time.deltaTime;
+        if (gameState == GameState.Playing || gameState == GameState.GameOver)
+            scoreLabelClone.GetComponent<Text>().text = "Record: " + recordScore + " PTS\n" + totalScore.ToString() + " PTS\nx" + multiplayer;
         }
 
     }
@@ -116,6 +116,7 @@ public class Manager : MonoBehaviour {
     private IEnumerator GoToMainMenuScreen()
     {
         Destroy(helpText);
+        Destroy(scoreLabelClone);
         while (mainMenuGameObject.transform.position.y < 0) {
             gameState = GameState.PreparingUI;
             yield return new WaitForEndOfFrame();
@@ -144,8 +145,10 @@ public class Manager : MonoBehaviour {
         stage = 1;
         Destroy(helpText);
         totalScore = 0;
-        multiplayer = 1;
+        multiplayer = 1f;
+        recordScore = PlayerPrefs.GetInt("recordScore");
         StartCoroutine(CreatePlayer());
+        Destroy(scoreLabelClone);
         scoreLabelClone = Instantiate(scoreLabel);
         scoreLabelClone.transform.SetParent(canvas.transform, false);
         BeginStage();
@@ -159,14 +162,13 @@ public class Manager : MonoBehaviour {
             Destroy(endOfStageClone, 3.0f);
             Invoke("BeginStage", 3.0f);
             stage++;
-            multiplayer++;
+            multiplayer+=0.2f;
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
     }
 
     public void BeginStage() {
         audioManager.ContinueMusic();
         gameState = GameState.Playing;
-        int patternNum = Random.Range(1, 3);
         pattern.GetComponent<Pattern>().CallRandomPattern();
         GameObject newStageClone = Instantiate(newStageLabel);
         newStageClone.transform.SetParent(canvas.transform, false);
@@ -195,6 +197,7 @@ public class Manager : MonoBehaviour {
     public void GameOver() {
         time = 0;
         audioManager.PauseMusic();
+        PlayerPrefs.SetInt("recordScore", 3);
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
         Invoke("InstantiateHelpText",2.0f);
