@@ -130,7 +130,7 @@ public class Manager : MonoBehaviour {
 
     public void BeginStage()
     {
-        StartCoroutine(pattern.GetComponent<Pattern>().InitPatternWithNum(1,0.0f));
+        StartCoroutine(pattern.GetComponent<Pattern>().InitPatternWithNum(2,0.0f));
         GameObject newStageClone = Instantiate(newStageLabel);
         newStageClone.transform.SetParent(canvas.transform, false);
         newStageClone.GetComponent<Text>().text = "STAGE " + stage;

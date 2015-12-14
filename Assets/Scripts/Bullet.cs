@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
 
     private Color bulletColor;
     public int bulletType = 1;
-    private float bulletSpeed;
+    public float bulletSpeed;
+    public float bulletCurve;
 
     public string bulletMoveType;
     
@@ -15,7 +17,6 @@ public class Bullet : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //bulletSpeed = Manager.Time*0.01;
       
     }
 
@@ -73,9 +74,9 @@ public class Bullet : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	    if (bulletMoveType == "spiral")
-	    {
-	        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2 (-gameObject.transform.position.x, -gameObject.transform.position.y));
+	    if (bulletMoveType == "spiral") {
+            Vector2 vect = new Vector2(gameObject.transform.position.y * bulletSpeed, -gameObject.transform.position.x * bulletSpeed) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y).normalized * bulletCurve*bulletSpeed;
+	        gameObject.GetComponent<Rigidbody2D>().velocity = vect;
 	    }
 	}
 }

@@ -19,13 +19,14 @@ public class Pattern : MonoBehaviour {
             for (int i = 1; i <= Manager.stage*6; i++) {
                 StartCoroutine(CreateBullets(4, i/6f, i%4, i));
             }
-            if (patNum == 2)
+        }
+        else if (patNum == 2)
+        {
+            for (int i = 1; i <= Manager.stage * 16; i++)
             {
-                CreateSpiralBullets(1, 0f, 1, 1);
+                StartCoroutine(CreateSpiralBullets(1, 0.0f, 1, 2.0f, 0.8f, 1));
             }
-        
-        
-}
+        }
     }
 
     public void StartTutorial(bool again) {
@@ -89,7 +90,6 @@ public class Pattern : MonoBehaviour {
 
     private IEnumerator CreateBullets(int num, float pos, int color, float delayTime) {
         yield return new WaitForSeconds(delayTime);
-        Spawner.objectWithPatternCreated += num;
         for (int i = 0; i < num; i++) {
             float position = pos + 1.0f*i/num;
             if (position >= 1.0f) {
@@ -111,12 +111,12 @@ public class Pattern : MonoBehaviour {
             }
         }
     }
-    private IEnumerator CreateSpiralBullets(int num, float pos, int color, float delayTime)
+    private IEnumerator CreateSpiralBullets(int num, float pos, int color, float speed, float curve, float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
-        Spawner.objectWithPatternCreated += num;
         for (int i = 0; i < num; i++)
         {
+            Debug.Log("Spiral");
             float position = pos + 1.0f * i / num;
             if (position >= 1.0f)
             {
@@ -126,8 +126,8 @@ public class Pattern : MonoBehaviour {
             {
                 GameObject createdBullet = SpawnSingleBullet(position);
                 createdBullet.GetComponent<Bullet>().bulletMoveType = "spiral";
-                createdBullet.GetComponent<Rigidbody2D>().AddForce(
-                    new Vector2(force * (createdBullet.transform.position.y)/(createdBullet.transform.position.x), force * (-createdBullet.transform.position.y)));
+                createdBullet.GetComponent<Bullet>().bulletCurve = curve;
+                createdBullet.GetComponent<Bullet>().bulletSpeed = speed;
                 if (color == 1)
                 {
                     createdBullet.GetComponent<SpriteRenderer>().color = ColorPalette.bullet1Color;
