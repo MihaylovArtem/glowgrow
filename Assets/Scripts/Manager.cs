@@ -16,7 +16,7 @@ public class Manager : MonoBehaviour {
 
     public static int totalScore;
     public static int recordScore;
-    public static int multiplayer;
+    public static float multiplayer;
 
     public static GameState gameState;
     public static int stage;
@@ -85,9 +85,9 @@ public class Manager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
             StartCoroutine(GoToMainMenuScreen());
         }
-        if (gameState == GameState.Playing)
+        if (gameState == GameState.Playing || gameState == GameState.GameOver)
         {
-            scoreLabelClone.GetComponent<Text>().text = "Your score\n" + totalScore.ToString();
+            scoreLabelClone.GetComponent<Text>().text = "Record: " + recordScore + "\n" + totalScore.ToString() + " PTS\nx" + multiplayer;
         }
     }
 
@@ -109,6 +109,7 @@ public class Manager : MonoBehaviour {
     }
 
     private IEnumerator GoToMainMenuScreen() {
+        Destroy(scoreLabelClone);
         while (mainMenuGameObject.transform.position.y < 0) {
             gameState = GameState.PreparingUI;
             yield return new WaitForEndOfFrame();
@@ -132,8 +133,9 @@ public class Manager : MonoBehaviour {
         stage = 1;
         DestroyImmediate(helpText);
         totalScore = 0;
-        multiplayer = 1;
+        multiplayer = 1f;
         StartCoroutine(CreatePlayer());
+        Destroy(scoreLabelClone);
         scoreLabelClone = Instantiate(scoreLabel);
         scoreLabelClone.transform.SetParent(canvas.transform, false);
         BeginStage();
@@ -146,14 +148,14 @@ public class Manager : MonoBehaviour {
             Destroy(endOfStageClone, 3.0f);
             Invoke("BeginStage", 3.0f);
             stage++;
-            multiplayer++;
+            multiplayer+=0.2f;
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
     }
 
     public void BeginStage()
     {
         gameState = GameState.Playing;
-        int patternNum = Random.Range(1, 3);
+        int patternNum = 3;
         pattern.GetComponent<Pattern>().InitPatternWithNum(patternNum, 0.0f);
         GameObject newStageClone = Instantiate(newStageLabel);
         newStageClone.transform.SetParent(canvas.transform, false);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -114,6 +115,9 @@ public class Player : MonoBehaviour {
             Debug.Log("Stage ended");
             gameManager.EndStage();
             InvokeRepeating("DestroyTopRow", 3f, 0.001f);
+            Manager.totalScore += Convert.ToInt32(400 * Manager.multiplayer);
+            if (Manager.totalScore > Manager.recordScore)
+                Manager.recordScore = Manager.totalScore;
         }
     }
 

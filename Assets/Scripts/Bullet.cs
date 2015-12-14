@@ -41,6 +41,8 @@ public class Bullet : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             Manager.totalScore += 10;
+            if (Manager.totalScore > Manager.recordScore)
+                Manager.recordScore = Manager.totalScore;
             if (gameObject.GetComponent<SpriteRenderer>().color == player.currentGlowColor)
             {
                 player.CreateRowWithBullet(gameObject);
@@ -66,7 +68,10 @@ public class Bullet : MonoBehaviour {
                             destroy = false;
                         }
                     }
-                    Manager.totalScore += numberOfDestroyedRows*Manager.multiplayer;
+                    Debug.Log(numberOfDestroyedRows);
+                    Manager.totalScore += Convert.ToInt32(numberOfDestroyedRows*10*Manager.multiplayer);
+                    if (Manager.totalScore > Manager.recordScore)
+                        Manager.recordScore = Manager.totalScore;
                 }
                 else
                 {
