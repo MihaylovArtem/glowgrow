@@ -19,8 +19,11 @@ public class Player : MonoBehaviour {
     public GameObject playerGameObject;
     public GameObject rowGameObject;
     private GameObject topRow;
+
+    private Manager gameManager;
     // Use this for initialization
     private void Start() {
+        gameManager = GameObject.Find("Main Camera").GetComponent<Manager>();
         glowSpriteRenderer = glowGameObject.GetComponent<SpriteRenderer>();
         nextRowScale = playerGameObject.transform.localScale;
         currentSize = nextRowScale.x;
@@ -107,7 +110,7 @@ public class Player : MonoBehaviour {
 
     private void CheckIfStageEnded() {
         if (stackOfCatchBullets.Count >= 40) {
-            GameObject.Find("Main Camera").GetComponent<Manager>().EndStage();
+            gameManager.EndStage();
             InvokeRepeating("DestroyTopRow", 3f, 0.001f);
         }
     }
@@ -133,5 +136,6 @@ public class Player : MonoBehaviour {
         Destroy(expl, 5f);
 
         Destroy(gameObject);
+        gameManager.GameOver();
     }
 }

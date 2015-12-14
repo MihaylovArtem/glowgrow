@@ -27,6 +27,7 @@ public class Manager : MonoBehaviour {
 
     public GameObject playerPrefab;
     private GameObject currentPlayer;
+    private GameObject canvas;
 
     private GameObject pressUpText;
     public GameObject pressUpTextPrefab;
@@ -38,8 +39,12 @@ public class Manager : MonoBehaviour {
 
     private void Start() {
         pattern = Instantiate(pattern);
+        canvas = GameObject.Find("Canvas");
+        pattern.GetComponent<Pattern>().tutorialTextPrefab = tutorialTextPrefab;
+        pattern.GetComponent<Pattern>().tutorialTextPrefab2 = tutorialTextPrefab2;
+
         pressUpText = Instantiate(pressUpTextPrefab);
-        pressUpText.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        pressUpText.transform.SetParent(canvas.transform, false);
         ColorPalette.InitPalleteNum(2);
         Camera.main.backgroundColor = ColorPalette.background1Color;
         gameBackgroundObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
@@ -59,6 +64,15 @@ public class Manager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.MainMenu) {
             StartCoroutine(GoToGameScreen());
         }
+        if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.GameOver)
+        {
+            if (PlayerPrefs.GetInt("TutorialCompleted") != 1) {
+                StartTutorial(true);
+            }
+            else {
+                StartNewGame();
+            }
+        }
     }
 
     IEnumerator GoToGameScreen() {
@@ -70,12 +84,12 @@ public class Manager : MonoBehaviour {
             gameBackgroundObject.transform.position -= new Vector3(0, yPosChange, 0);
             mainMenuGameObject.transform.position -= new Vector3(0, yPosChange, 0);
         }
-//        if (PlayerPrefs.GetInt("TutorialCompleted") != 1) {
-            StartTutorial();
-//        }
-//        else {
-//            StartNewGame();
-//        }
+        if (PlayerPrefs.GetInt("TutorialCompleted") != 1) {
+            StartTutorial(false);
+        }
+        else {
+            StartNewGame();
+        }
     }
     IEnumerator GoToMainMenuScreen()
     {
@@ -91,11 +105,9 @@ public class Manager : MonoBehaviour {
         gameState = GameState.MainMenu;
     }
 
-    public void StartTutorial() {
+    public void StartTutorial(bool again) {
         gameState = GameState.Tutorial;
-        pattern.GetComponent<Pattern>().tutorialTextPrefab = tutorialTextPrefab;
-        pattern.GetComponent<Pattern>().tutorialTextPrefab2 = tutorialTextPrefab2;
-        pattern.GetComponent<Pattern>().StartTutorial(false);
+        pattern.GetComponent<Pattern>().StartTutorial(again);
         StartCoroutine(CreatePlayer());
     }
     private void StartNewGame()
@@ -105,19 +117,22 @@ public class Manager : MonoBehaviour {
         stage = 1;
         score = 0;
         StartCoroutine(CreatePlayer());
+        BeginStage();
     }
 
     public void EndStage() {
             GameObject endOfStageClone = Instantiate(endOfStageLabel);
-            endOfStageClone.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            endOfStageClone.transform.SetParent(canvas.transform, false);
             Destroy(endOfStageClone, 3.0f);
             Invoke("BeginStage", 3.0f);
             stage++;
     }
 
-    public void BeginStage() {
+    public void BeginStage()
+    {
+        StartCoroutine(pattern.GetComponent<Pattern>().InitPatternWithNum(1,0.0f));
         GameObject newStageClone = Instantiate(newStageLabel);
-        newStageClone.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        newStageClone.transform.SetParent(canvas.transform, false);
         newStageClone.GetComponent<Text>().text = "STAGE " + stage;
         Destroy(newStageClone, 5.0f);
     }
@@ -137,5 +152,12 @@ public class Manager : MonoBehaviour {
         currentPlayer = Instantiate(playerPrefab);
         currentPlayer.GetComponent<SpriteRenderer>().color = ColorPalette.playerColor;
         currentPlayer.GetComponent<Player>().currentGlowColor = ColorPalette.bullet1Color;
+    }
+
+    public void GameOver() {
+        gameState = GameState.GameOver;
+        GameObject helpText = Instantiate(pressUpTextPrefab);
+        helpText.transform.SetParent(canvas.transform,false);
+        helpText.GetComponent<Text>().text = "Press up to restart\n\nPress down to main menu";
     }
 }
