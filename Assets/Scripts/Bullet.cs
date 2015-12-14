@@ -7,6 +7,9 @@ public class Bullet : MonoBehaviour {
     public int bulletType = 1;
     private float bulletSpeed;
 
+    public string bulletMoveType;
+    
+
 
 
     // Use this for initialization
@@ -70,6 +73,9 @@ public class Bullet : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+	    if (bulletMoveType == "spiral")
+	    {
+	        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2 (-gameObject.transform.position.x, -gameObject.transform.position.y));
+	    }
 	}
 }
