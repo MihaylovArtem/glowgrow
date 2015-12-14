@@ -134,6 +134,7 @@ public class Manager : MonoBehaviour {
         DestroyImmediate(helpText);
         totalScore = 0;
         multiplayer = 1f;
+        recordScore = PlayerPrefs.GetInt("recordScore");
         StartCoroutine(CreatePlayer());
         Destroy(scoreLabelClone);
         scoreLabelClone = Instantiate(scoreLabel);
@@ -183,6 +184,7 @@ public class Manager : MonoBehaviour {
 
     public void GameOver()
     {
+        PlayerPrefs.SetInt("recordScore", 3);
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
         Invoke("InstantiateHelpText",2.0f);
