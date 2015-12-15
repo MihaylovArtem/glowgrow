@@ -81,7 +81,7 @@ public class Manager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.MainMenu) {
             StartCoroutine(GoToGameScreen());
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.GameOver) {
+        if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.GameOver && helpText) {
             if (!tutorialCompleted)
             {
                 StartTutorial(true);
@@ -232,7 +232,7 @@ public class Manager : MonoBehaviour {
     public void GameOver() {
         time = 0;
         audioManager.PauseMusic();
-        PlayerPrefs.SetInt("recordScore", 3);
+        PlayerPrefs.SetInt("recordScore",recordScore);
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
         Invoke("InstantiateHelpText", 2.0f);
