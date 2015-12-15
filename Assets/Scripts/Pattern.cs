@@ -59,11 +59,48 @@ public class Pattern : MonoBehaviour {
 
             yield return new WaitForSeconds(7);
         }
+
+        else if (patNum == 5)
+        {
+            int elements = (int)(10 * Mathf.Log10(Manager.time + 10));
+            for (int i = 1; i <= elements; i++)
+            {
+                StartCoroutine(CreateBullets(1, startPoint + i / 2.0f, i % 2, i / 3.0f));
+            }
+            yield return new WaitForSeconds((int)(10 * Mathf.Log10(Manager.time + 10)) / 2 + 1);
+        }
+        else if (patNum == 6)
+        {
+            int elements = (int)(4 * Mathf.Log10(Manager.time + 10));
+            for (int i = 1; i <= elements; i++)
+            {
+                StartCoroutine(CreateBullets(1, startPoint, 2, i / 8.0f));
+            }
+            yield return new WaitForSeconds(elements / 8.0f);
+
+            for (int i = 1; i <= elements; i++)
+            {
+                StartCoroutine(CreateBullets(1, startPoint + 0.25f, 1, i / 8.0f));
+            }
+            yield return new WaitForSeconds((int)(2*elements/ 8.0f));
+
+            for (int i = 1; i <= elements; i++)
+            {
+                StartCoroutine(CreateBullets(1, startPoint + 0.5f, 2, i / 8.0f));
+            }
+            yield return new WaitForSeconds((int)(3*elements / 8.0f));
+
+            for (int i = 1; i <= elements; i++)
+            {
+                StartCoroutine(CreateBullets(1, startPoint + 0.75f, 1, i / 8.0f));
+            }
+            yield return new WaitForSeconds((int)(4*elements/8.0f));
+        }
         CallRandomPattern();
     }
 
     public void CallRandomPattern() {
-        int randomNum = Random.Range(1, 5);
+        int randomNum = Random.Range(1, 7);
         StartCoroutine(InitPatternWithNum(randomNum));
         
     }
@@ -79,9 +116,9 @@ public class Pattern : MonoBehaviour {
             force = 25f * Mathf.Log10(Manager.time + 10);
             StartCoroutine(CreateTutorialText("Let's try again",0.0f,1));
             StartCoroutine(CreateTutorialText("Match your color with bullet's", 3.0f, 2));
-            StartCoroutine(CreateBullets(1, 0.0f, 1, 3));
+            StartCoroutine(CreateBullets(1, 0.5f, 1, 3));
             StartCoroutine(CreateTutorialText("Press left and right arrow to change your color", 6.0f, 1));
-            StartCoroutine(CreateBullets(1, 0.5f, 2, 8));
+            StartCoroutine(CreateBullets(1, 0.0f, 2, 8));
             StartCoroutine(CreateTutorialText("The rows of same color will explode if you catch the wrong particle", 10.0f, 2));
             StartCoroutine(CreateTutorialText("Good luck!", 13.0f, 1));
 
@@ -92,9 +129,9 @@ public class Pattern : MonoBehaviour {
             StartCoroutine(CreateTutorialText("Let's learn how to play this game", 0.0f,1));
             StartCoroutine(CreateTutorialText("It's very simple", 3.0f,2));
             StartCoroutine(CreateTutorialText("Match your color with bullet's", 6.0f,1));
-            StartCoroutine(CreateBullets(1, 0.0f, 1, 6));
+            StartCoroutine(CreateBullets(1, 0.25f, 1, 6));
             StartCoroutine(CreateTutorialText("Press arrows to change your color", 9.0f,1));
-            StartCoroutine(CreateBullets(1, 0.5f, 2, 11));
+            StartCoroutine(CreateBullets(1, 0.75f, 2, 11));
             StartCoroutine(CreateTutorialText("The row will explode if you catch the wrong particle", 13.0f, 2));
             StartCoroutine(CreateTutorialText("Good luck!", 16.0f, 1));
             PlayerPrefs.SetInt("TutorialCompleted", 1);

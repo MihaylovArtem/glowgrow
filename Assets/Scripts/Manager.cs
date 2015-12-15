@@ -64,6 +64,8 @@ public class Manager : MonoBehaviour {
         pressUpText = Instantiate(pressUpTextPrefab);
         pressUpText.transform.SetParent(canvas.transform, false);
         ColorPalette.InitPalleteNum(2);
+        GameObject.Find("LeftArrow").GetComponent<SpriteRenderer>().color = ColorPalette.bullet1Color;
+        GameObject.Find("RightArrow").GetComponent<SpriteRenderer>().color = ColorPalette.bullet2Color;
         Camera.main.backgroundColor = ColorPalette.background1Color;
         gameBackgroundObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;
         mainMenuGameObject.GetComponent<SpriteRenderer>().color = ColorPalette.background2Color;

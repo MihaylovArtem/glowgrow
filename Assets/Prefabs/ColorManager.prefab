@@ -27,6 +27,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a537937b458c5947954a80a829ce20a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftArrow: {fileID: 157850, guid: b6f654aff7e8375488a62602e9e903b9, type: 2}
+  rightArrow: {fileID: 153638, guid: b6f654aff7e8375488a62602e9e903b9, type: 2}
 --- !u!224 &22483144
 RectTransform:
   m_ObjectHideFlags: 1
@@ -50,7 +52,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: leftArrow
+      value: 
+      objectReference: {fileID: 157850, guid: b6f654aff7e8375488a62602e9e903b9, type: 2}
+    - target: {fileID: 0}
+      propertyPath: rightArrow
+      value: 
+      objectReference: {fileID: 153638, guid: b6f654aff7e8375488a62602e9e903b9, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 183826}

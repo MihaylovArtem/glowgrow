@@ -37,11 +37,27 @@ public class Player : MonoBehaviour {
         ChangeColorFromTo(glowSpriteRenderer.color, currentGlowColor);
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            currentGlowColor = ColorPalette.bullet1Color;
+            Color color = ColorPalette.bullet1Color;
+            GameObject.Find("LeftArrow").GetComponent<SpriteRenderer>().color = new Color(color.r-0.1f, color.g-0.1f, color.b-0.1f, color.a-0.1f); 
+            currentGlowColor = color;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            Color color = ColorPalette.bullet1Color;
+            GameObject.Find("LeftArrow").GetComponent<SpriteRenderer>().color = new Color(color.r + 0.1f, color.g + 0.1f, color.b + 0.1f, color.a + 0.1f);
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            currentGlowColor = ColorPalette.bullet2Color;
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Color color = ColorPalette.bullet2Color;
+            GameObject.Find("RightArrow").GetComponent<SpriteRenderer>().color = new Color(color.r - 0.1f, color.g - 0.1f, color.b - 0.1f, color.a - 0.1f);
+            currentGlowColor = color;
+        }
+
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            Color color = ColorPalette.bullet2Color;
+            GameObject.Find("RightArrow").GetComponent<SpriteRenderer>().color = new Color(color.r + 0.1f, color.g + 0.1f, color.b + 0.1f, color.a + 0.1f);
         }
     }
 

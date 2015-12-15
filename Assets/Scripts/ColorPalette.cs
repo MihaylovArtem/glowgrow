@@ -7,6 +7,9 @@ public class ColorPalette : MonoBehaviour {
     static public Color bullet2Color;
     static public Color background1Color;
     static public Color background2Color;
+
+    public GameObject leftArrow;
+    public GameObject rightArrow;
     
     // Use this for initialization
 	public static void InitPalleteNum (int i) {
@@ -61,9 +64,22 @@ public class ColorPalette : MonoBehaviour {
 
     public void ChangeAllObjectsToMatchPallete(int i)  {
         InitPalleteNum(i);
+        StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().ChangeArrows());
         StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().changeBackground1());
         StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().changeBackground2());
         StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().changeCamera());
+    }
+
+    public IEnumerator ChangeArrows() {
+        SpriteRenderer leftRenderer = GameObject.Find("LeftArrow").GetComponent<SpriteRenderer>();
+        SpriteRenderer rightRenderer = GameObject.Find("RightArrow").GetComponent<SpriteRenderer>();
+        while (leftRenderer.color != bullet1Color && rightRenderer.color!=bullet2Color)
+        {
+            yield return new WaitForEndOfFrame();
+            float t = Time.deltaTime * 20;
+            leftRenderer.color = Color.Lerp(leftRenderer.color, bullet1Color, t);
+            rightRenderer.color = Color.Lerp(rightRenderer.color, bullet2Color, t);
+        }
     }
 
     public IEnumerator changeCamera() {
