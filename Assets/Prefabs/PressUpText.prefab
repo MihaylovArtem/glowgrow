@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .196078435, g: .196078435, b: .196078435, a: 1}
+  m_Color: {r: .941176474, g: .941176474, b: .941176474, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: 72e353dffb03e464bb241d9b3ebeb2fb, type: 3}
     m_FontSize: 78
@@ -94,6 +94,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_FontData.m_FontSize
       value: 82
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.r
+      value: .941176474
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.g
+      value: .941176474
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.b
+      value: .941176474
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

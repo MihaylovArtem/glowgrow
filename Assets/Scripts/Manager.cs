@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class Manager : MonoBehaviour {
@@ -20,17 +18,18 @@ public class Manager : MonoBehaviour {
 
     public static GameState gameState;
     public static int stage;
+    public static float time;
 
     public GameObject arrowObject;
+    public AudioManager audioManager;
     private GameObject canvas;
     private GameObject currentPlayer;
-
-    public GameObject scoreLabel;
-    private GameObject scoreLabelClone;
 
 
     public GameObject endOfStageLabel;
     public GameObject gameBackgroundObject;
+    public GameObject gameNameText;
+    private GameObject helpText;
 
     public GameObject mainMenuGameObject;
     private float menuElementsSpeed = 0.03f;
@@ -40,19 +39,24 @@ public class Manager : MonoBehaviour {
     public GameObject playerPrefab;
 
     private GameObject pressUpText;
-    public GameObject gameNameText;
     public GameObject pressUpTextPrefab;
-    private GameObject helpText;
     private float score;
-    public static float time;
+    public GameObject scoreLabel;
+    private GameObject scoreLabelClone;
     public GameObject tutorialTextPrefab;
     public GameObject tutorialTextPrefab2;
+    public GameObject colorManagerPrefab;
+    public static GameObject colorManager;
 
-    public AudioManager audioManager;
+    private bool tutorialCompleted = false;
+
     // Use this for initialization
 
-    private void Start() {
+    private void Start()
+    {
+        audioManager.PlayMusic(1);
         pattern = Instantiate(pattern);
+        colorManager = Instantiate(colorManagerPrefab);
         canvas = GameObject.Find("Canvas");
         pattern.GetComponent<Pattern>().tutorialTextPrefab = tutorialTextPrefab;
         pattern.GetComponent<Pattern>().tutorialTextPrefab2 = tutorialTextPrefab2;
@@ -78,21 +82,24 @@ public class Manager : MonoBehaviour {
             StartCoroutine(GoToGameScreen());
         }
         if (Input.GetKeyUp(KeyCode.UpArrow) && gameState == GameState.GameOver) {
-            if (PlayerPrefs.GetInt("TutorialCompleted") != 1) {
+            if (!tutorialCompleted)
+            {
                 StartTutorial(true);
             }
             else {
                 StartNewGame();
             }
         }
-        if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
-            StartCoroutine(GoToMainMenuScreen());
-        }
+//        if (Input.GetKeyUp(KeyCode.DownArrow) && gameState == GameState.GameOver) {
+//            StartCoroutine(GoToMainMenuScreen());
+//        }
         if (gameState == GameState.Playing) time += Time.deltaTime;
-        if (gameState == GameState.Playing || gameState == GameState.GameOver)
-            scoreLabelClone.GetComponent<Text>().text = "Record: " + recordScore + " PTS\n" + totalScore.ToString() + " PTS\nx" + multiplayer;
+        if (gameState == GameState.Playing || gameState == GameState.GameOver && tutorialCompleted)
+        {
+            Debug.Log(PlayerPrefs.GetInt("TutorialCompleted"));
+            scoreLabelClone.GetComponent<Text>().text = "Record: " + recordScore + " PTS\n" + totalScore + " PTS\nx" +
+                                                        multiplayer;
         }
-
     }
 
     private IEnumerator GoToGameScreen() {
@@ -105,7 +112,7 @@ public class Manager : MonoBehaviour {
             gameBackgroundObject.transform.position -= new Vector3(0, yPosChange, 0);
             mainMenuGameObject.transform.position -= new Vector3(0, yPosChange, 0);
         }
-        if (PlayerPrefs.GetInt("TutorialCompleted") != 1) {
+        if (!tutorialCompleted) {
             StartTutorial(false);
         }
         else {
@@ -113,33 +120,55 @@ public class Manager : MonoBehaviour {
         }
     }
 
-    private IEnumerator GoToMainMenuScreen()
-    {
+    private IEnumerator GoToMainMenuScreen() {
         Destroy(helpText);
         Destroy(scoreLabelClone);
-        while (mainMenuGameObject.transform.position.y < 0) {
+        while (mainMenuGameObject.transform.position.y < 0 && mainMenuGameObject.transform.position.y<Screen.height*2)
+        {
             gameState = GameState.PreparingUI;
             yield return new WaitForEndOfFrame();
             float yPosChange = menuElementsSpeed*(gameBackgroundObject.transform.position.y + 1);
             gameBackgroundObject.transform.position += new Vector3(0, yPosChange, 0);
             mainMenuGameObject.transform.position += new Vector3(0, yPosChange, 0);
         }
-        gameBackgroundObject.transform.position = new Vector3(0, Screen.height * 2, 0);
+        gameBackgroundObject.transform.position = new Vector3(0, Screen.height*2, 0);
         mainMenuGameObject.transform.position = new Vector3(0, 0, 1);
         pressUpText.SetActive(true);
         gameNameText.SetActive(true);
         gameState = GameState.MainMenu;
     }
 
-    public void StartTutorial(bool again) {
+    public void StartTutorial(bool again)
+    {
+        if (again)
+        {
+            colorManager.GetComponent<ColorPalette>().ChangeAllObjectsToMatchPallete(2);
+            audioManager.ContinueMusic();
+            Destroy(helpText);
+
+            foreach (var player in GameObject.FindGameObjectsWithTag("Row"))
+            {
+                Destroy(player);
+            }
+        }
         gameState = GameState.Tutorial;
         pattern.GetComponent<Pattern>().StartTutorial(again);
         StartCoroutine(CreatePlayer());
     }
 
-    private void StartNewGame() {
+    public void StartNewGame() {
+        tutorialCompleted = true;
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player")) {
+            Destroy(player);
+        }
+        foreach (var player in GameObject.FindGameObjectsWithTag("Row"))
+        {
+            Destroy(player);
+        }
         time = 0;
-        audioManager.PlayMusic();
+        int randomPallete = Random.Range(1, 5);
+        colorManager.GetComponent<ColorPalette>().ChangeAllObjectsToMatchPallete(randomPallete);
+        audioManager.PlayMusic(0);
         gameState = GameState.Playing;
         time = 0;
         stage = 1;
@@ -153,20 +182,26 @@ public class Manager : MonoBehaviour {
         scoreLabelClone.transform.SetParent(canvas.transform, false);
         BeginStage();
     }
-    public void EndStage() {
+
+    public void EndStage()
+    {
+        colorManager.GetComponent<ColorPalette>().ChangeAllObjectsToMatchPallete(0);
         audioManager.PauseMusic();
         gameState = GameState.BetweenStage;
-            GameObject endOfStageClone = Instantiate(endOfStageLabel);
-            endOfStageClone.transform.SetParent(canvas.transform, false);
-        endOfStageClone.GetComponent<Text>().text="STAGE "+stage+" ENDED";
-            Destroy(endOfStageClone, 3.0f);
-            Invoke("BeginStage", 3.0f);
-            stage++;
-            multiplayer+=0.2f;
+        GameObject endOfStageClone = Instantiate(endOfStageLabel);
+        endOfStageClone.transform.SetParent(canvas.transform, false);
+        endOfStageClone.GetComponent<Text>().text = "STAGE " + stage + " ENDED";
+        Destroy(endOfStageClone, 3.0f);
+        Invoke("BeginStage", 3.0f);
+        stage++;
+        multiplayer += 0.2f;
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
     }
 
-    public void BeginStage() {
+    public void BeginStage()
+    {
+        int randomPallete = Random.Range(1, 5);
+        colorManager.GetComponent<ColorPalette>().ChangeAllObjectsToMatchPallete(randomPallete);
         audioManager.ContinueMusic();
         gameState = GameState.Playing;
         pattern.GetComponent<Pattern>().CallRandomPattern();
@@ -200,14 +235,14 @@ public class Manager : MonoBehaviour {
         PlayerPrefs.SetInt("recordScore", 3);
         pattern.GetComponent<Pattern>().StopAllPatternCoroutines();
         gameState = GameState.GameOver;
-        Invoke("InstantiateHelpText",2.0f);
+        Invoke("InstantiateHelpText", 2.0f);
+        colorManager.GetComponent<ColorPalette>().ChangeAllObjectsToMatchPallete(0);
     }
 
-    void InstantiateHelpText() {
-
+    private void InstantiateHelpText() {
         helpText = Instantiate(pressUpTextPrefab);
         helpText.transform.name = "Help text";
         helpText.transform.SetParent(canvas.transform, false);
-        helpText.GetComponent<Text>().text = "Press up to restart\n\nPress down to main menu";
+        helpText.GetComponent<Text>().text = "Press up to restart";
     }
 }

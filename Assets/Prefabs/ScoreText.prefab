@@ -29,10 +29,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .196078435, g: .196078435, b: .196078435, a: 1}
+  m_Color: {r: .941176474, g: .941176474, b: .941176474, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: 369936475ef829a4f9c7f43d341082a8, type: 3}
-    m_FontSize: 70
+    m_FontSize: 62
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -65,8 +65,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 481, y: 310}
-  m_SizeDelta: {x: 534, y: 204}
+  m_AnchoredPosition: {x: 373, y: 206.25}
+  m_SizeDelta: {x: 783, y: 412.5}
   m_Pivot: {x: .5, y: .5}
 --- !u!1001 &100100000
 Prefab:
@@ -88,6 +88,18 @@ Prefab:
       value: 
       objectReference: {fileID: 12800000, guid: 369936475ef829a4f9c7f43d341082a8,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Color.r
+      value: .941176474
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.g
+      value: .941176474
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.b
+      value: .941176474
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 150900}

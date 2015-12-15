@@ -22,10 +22,10 @@ public class ColorPalette : MonoBehaviour {
                     break;
                 }
             case 1: {
-                playerColor = new Color(84f/255f, 36f/255f, 55f/255f);
-                bullet1Color = new Color(217f/255f, 91f/255f, 67f/255f);
-                bullet2Color = new Color(83f/255f, 119f/255f, 122f/255f);
-                background1Color = new Color(192f/255f, 41f/255f, 66f/255f);
+                playerColor = new Color(85f/255f, 98f/255f, 112f/255f);
+                bullet1Color = new Color(199f/255f, 244f/255f, 100f/255f);
+                bullet2Color = new Color(255f / 255f, 107f / 255f, 107f / 255f);
+                background1Color = new Color(78f / 255f, 205f / 255f, 196f / 255f); 
                 background2Color = playerColor;
                 break;
             }
@@ -38,14 +38,70 @@ public class ColorPalette : MonoBehaviour {
                     background2Color = playerColor;
                     break;
                 }
+            case 3:
+                {
+                    playerColor = new Color(46f / 255f, 38f / 255f, 51f / 255f);
+                    bullet1Color = new Color(239f / 255f, 255f / 255f, 205f / 255f);
+                    bullet2Color = new Color(153f / 255f, 23f / 255f, 60f / 255f);
+                    background1Color = new Color(85f / 255f, 23f / 255f, 60f / 255f);
+                    background2Color = playerColor;
+                    break;
+                }
+            case 4:
+                {
+                    playerColor = new Color(28f / 255f, 20f / 255f, 13f / 255f);
+                    bullet1Color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+                    bullet2Color = new Color(203f / 255f, 232f / 255f, 107f / 255f);
+                    background1Color = new Color(242f / 255f, 233f / 255f, 225f / 255f);
+                    background2Color = playerColor;
+                    break;
+                }
 	    }
 	}
 
-    IEnumerator ChangeAllObjectsToMatchPallete()  {
-        foreach (var pl in GameObject.FindGameObjectsWithTag("PlayerColor")) {
-            
+    public void ChangeAllObjectsToMatchPallete(int i)  {
+        InitPalleteNum(i);
+        StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().changeBackground1());
+        StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().changeBackground2());
+        StartCoroutine(Manager.colorManager.GetComponent<ColorPalette>().changeCamera());
+    }
+
+    public IEnumerator changeCamera() {
+        while (Camera.main.backgroundColor != background1Color)
+        {
+            yield return new WaitForEndOfFrame();
+            float t = Time.deltaTime * 10;
+            Camera.main.backgroundColor = Color.Lerp(Camera.main.backgroundColor, background1Color, t);
         }
-        yield return new WaitForEndOfFrame();
+    }
+
+    public IEnumerator changeBackground2()
+    {
+        
+        foreach (var pl in GameObject.FindGameObjectsWithTag("Background2"))
+        {
+            SpriteRenderer spriteRenderer = pl.GetComponent<SpriteRenderer>();
+            while (spriteRenderer.color != background2Color)
+            {
+                yield return new WaitForEndOfFrame();
+                float t = Time.deltaTime *  10;
+                spriteRenderer.color = Color.Lerp(spriteRenderer.color, background2Color, t);
+            }
+        }
+    }
+
+    public IEnumerator changeBackground1()
+    {
+        foreach (var pl in GameObject.FindGameObjectsWithTag("Background1"))
+        {
+            SpriteRenderer spriteRenderer = pl.GetComponent<SpriteRenderer>();
+            while (spriteRenderer.color != background1Color)
+            {
+                yield return new WaitForEndOfFrame();
+                float t = Time.deltaTime * 10;
+                spriteRenderer.color = Color.Lerp(spriteRenderer.color, background1Color, t);
+            }
+        }
     }
     
 }

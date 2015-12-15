@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Pattern : MonoBehaviour {
     public GameObject bulletGameObject;
 
-    public float force;
+    public float force=25f;
     public GameObject pattern;
     public GameObject tutorialTextPrefab;
     
@@ -15,7 +15,7 @@ public class Pattern : MonoBehaviour {
 
     // Use this for initialization
     public IEnumerator InitPatternWithNum(int patNum) {
-        force = 25f * Mathf.Log10(Manager.time+10);
+        force = 25f * Mathf.Log(Manager.time+6,6);
         Debug.Log(patNum);
         float startPoint = Random.Range(0.0f, 1.0f);
         if (patNum == 1) {
@@ -76,16 +76,19 @@ public class Pattern : MonoBehaviour {
     public void StartTutorial(bool again) {
         if (again) {
             StopAllCoroutines();
+            force = 25f * Mathf.Log10(Manager.time + 10);
             StartCoroutine(CreateTutorialText("Let's try again",0.0f,1));
             StartCoroutine(CreateTutorialText("Match your color with bullet's", 3.0f, 2));
             StartCoroutine(CreateBullets(1, 0.0f, 1, 3));
-            StartCoroutine(CreateTutorialText("Press arrows to change your color", 6.0f, 1));
+            StartCoroutine(CreateTutorialText("Press left and right arrow to change your color", 6.0f, 1));
             StartCoroutine(CreateBullets(1, 0.5f, 2, 8));
             StartCoroutine(CreateTutorialText("The rows of same color will explode if you catch the wrong particle", 10.0f, 2));
             StartCoroutine(CreateTutorialText("Good luck!", 13.0f, 1));
 
         }
-        else {
+        else
+        {
+            force = 25f * Mathf.Log10(Manager.time + 10);
             StartCoroutine(CreateTutorialText("Let's learn how to play this game", 0.0f,1));
             StartCoroutine(CreateTutorialText("It's very simple", 3.0f,2));
             StartCoroutine(CreateTutorialText("Match your color with bullet's", 6.0f,1));
@@ -101,13 +104,13 @@ public class Pattern : MonoBehaviour {
     public IEnumerator CreateTutorialText(string text, float waitTime, int prefabType) {
         yield return new WaitForSeconds(waitTime);
         if (text == "Good luck!") {
+            GameObject.Find("Main Camera").GetComponent<Manager>().StartNewGame();
             PlayerPrefs.SetInt("TutorialCompleted", 1);
         }
         GameObject tutorialTextPrefabClone;
         GameObject canvas = GameObject.Find("Canvas");
         if (prefabType == 1) {
             tutorialTextPrefabClone = Instantiate(tutorialTextPrefab);
-
         }
         else
         {

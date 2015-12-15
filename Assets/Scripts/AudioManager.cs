@@ -12,9 +12,9 @@ public class AudioManager : MonoBehaviour {
     }
 
 	// Use this for initialization
-    public void PlayMusic() {
+    public void PlayMusic(int i) {
         source.Stop();
-        source.clip = musics[Random.Range(0, musics.Count())];
+        source.clip = musics[i];
         source.Play();
     }
 
